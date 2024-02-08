@@ -1,5 +1,9 @@
 package com.UserAccount.pojo;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.GeneratedValue;
@@ -41,18 +45,33 @@ public class User {
 	//@Size(min=4,message = "Password must have atleast 4 characters")
 	private String password;	
 
+	//@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+	transient private UserProfile userprofile; // transitent -not to store in DB
+	
+	public UserProfile getUserprofile() {
+		return userprofile;
+	}
+
+	public void setUserprofile(UserProfile userprofile) {
+		this.userprofile = userprofile;
+	}
+
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(long uid, String uname, String fullName, String email, String password) {
+	
+
+	public User(long uid, String uname, String fullName, String email, String password, UserProfile userprofile) {
 		super();
 		this.uid = uid;
 		this.uname = uname;
 		this.fullName = fullName;
 		this.email = email;
 		this.password = password;
+		this.userprofile = userprofile;
 	}
 
 	public long getUid() {

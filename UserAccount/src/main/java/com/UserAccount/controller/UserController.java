@@ -3,9 +3,12 @@ package com.UserAccount.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,33 +33,38 @@ import com.UserAccount.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	Logger logger = LoggerFactory.getLogger(UserController.class);
+
 
 	// ALL GET
 	// requests--------------------------------------------------------***GET**------------
-	@GetMapping("/users")
+	@GetMapping(produces=MediaType.APPLICATION_JSON_VALUE,path = "users")
 	public ResponseEntity<List<User>> getUsers() {
+		logger.info("Getting all users");
 		return ResponseEntity.of(Optional.of(userService.getUsers()));
 
 	}
 
-	@GetMapping("/userid/{uid}")
+	@GetMapping(path="/userid/{uid}",produces=MediaType.APPLICATION_JSON_VALUE)
 	public User getUser(@PathVariable Long uid) {
 		/*
 		 * User user=userService.getUser(uid); if(user==null) { return
 		 * ResponseEntity.status(HttpStatus.NOT_FOUND).build(); } return
 		 * ResponseEntity.of(Optional.of(user));
 		 */
+		logger.info("Get user with id "+uid);
 		return userService.getUser(uid);
 	}
 
-	@GetMapping("/{uname}")
+	@GetMapping(path="/{uname}",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<String>> isUsernameExist(@Validated @PathVariable String uname) {
 		List<String> usernames = userService.isUsernameExist(uname);
 
 		return ResponseEntity.of(Optional.of(usernames));
 	}
 
-	@GetMapping("/AllUsernames")
+	@GetMapping(path="/AllUsernames",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<String>> getAllUsernames() {
 		return ResponseEntity.of(Optional.of(userService.getAllUsernames()));
 	}
@@ -66,7 +74,7 @@ public class UserController {
 	//
 	// using pathvariable
 	// http://localhost:8000/user/login/me@15/me1115
-	@GetMapping("/login/{uname}/{password}")
+	@GetMapping(path="/login/{uname}/{password}",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getUserForLogin(@Validated @PathVariable String uname, @Validated @PathVariable String password) {
 		User user = userService.getUserByUnameAndPassword(uname, password);
 		if (user == null) {
@@ -77,7 +85,7 @@ public class UserController {
 	}
 
 	// http://localhost:8000/user/login/user?uname=me@15&password=me1115
-	@GetMapping("/login/user")
+	@GetMapping(path="/login/user",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getUserForLoginRp(@Validated @RequestParam String uname, @Validated @RequestParam String password) {
 		String s = "Login Successful";
 		// String f="Login Failed!! Enter Correct Details";
@@ -88,7 +96,7 @@ public class UserController {
 
 	// ALL POST
 	// requests---------------------------------------------------------***POST**-----SIGNUP------
-	@PostMapping("/signUp")
+	@PostMapping(path="/signUp",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> addUser(@Validated @RequestBody User User) {
 		/*
 		 * String s="Signup Successful"; String
@@ -107,7 +115,7 @@ public class UserController {
 
 	}
 
-	@PostMapping("/addUsers")
+	@PostMapping(path="/addUsers",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> addUsers(@Validated @RequestBody List<User> ls) {
 		userService.addUsers(ls);
 		String s = "Users added";
@@ -117,7 +125,7 @@ public class UserController {
 
 	// ALL PUT
 	// requests----------------------------------------------------------***PUT**----------
-	@PutMapping("/updateUser")
+	@PutMapping(path="/updateUser",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateUser(@Validated @RequestBody User User) {
 		String s = "Users updated";
 		userService.updateUser(User);
@@ -134,4 +142,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(s);
 
 	}
+	
+	
 }

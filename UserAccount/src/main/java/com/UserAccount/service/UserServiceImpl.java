@@ -1,6 +1,9 @@
 package com.UserAccount.service;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +15,18 @@ import com.UserAccount.pojo.User;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
+	
 	private UserDAO Userdao;
+	
+	private ProfileClient profileClient;
+	
+	 
+
+	public UserServiceImpl(UserDAO userdao, ProfileClient profileClient) {
+		super();
+		Userdao = userdao;
+		this.profileClient = profileClient;
+	}
 
 	// ALL GET
 	// requests----------------------------------------------------------------GET----
@@ -23,15 +36,23 @@ public class UserServiceImpl implements UserService {
 		if (Userdao.findAll().isEmpty()) {
 			throw new UserNotFoundException("No User Exist till now");
 		}
-		return Userdao.findAll();
+		List<User> users=Userdao.findAll();
+		List<User> newUsersList=users.stream().map(user->{user.setUserprofile(profileClient.getUserProfileOfUser(user.getUid()));
+		return user;
+		}).collect(Collectors.toList());
+		return newUsersList;
 	}
 
-	@Override
+	@Override	
 	public User getUser(Long uid) {
-		if (Userdao.findById(uid).isEmpty()) {
-			throw new UserNotFoundException("User not exist with id " + uid);
-		}
-		return Userdao.findById(uid).get();
+		/*
+		 * if (Userdao.findById(uid).isEmpty()) { throw new
+		 * UserNotFoundException("User not exist with id " + uid); }
+		 */
+		User user=Userdao.findById(uid).orElseThrow(()->new UserNotFoundException("User not exist with id " + uid));
+		
+		user.setUserprofile(profileClient.getUserProfileOfUser(user.getUid()));
+		return user;
 	}
 
 	public List<String> isUsernameExist(String ename) {
