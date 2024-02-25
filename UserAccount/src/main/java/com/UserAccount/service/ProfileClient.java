@@ -3,6 +3,7 @@ package com.UserAccount.service;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.UserAccount.pojo.UserProfile;
 
@@ -12,5 +13,9 @@ public interface ProfileClient {
 	
 	@GetMapping("/userprofile/profileid/{pid}")
 	UserProfile getUserProfileOfUser(@PathVariable Long pid);
+	
+	@PutMapping("/userprofile/updateUserProfile")
+	UserProfile updateUserProfileOfUser(UserProfile UserProfile);
 
+	
 }

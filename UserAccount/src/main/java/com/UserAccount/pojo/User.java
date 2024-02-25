@@ -1,9 +1,5 @@
 package com.UserAccount.pojo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.GeneratedValue;

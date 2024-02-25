@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,11 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.UserProfile.exception.ProfileDetailAlreadyExist;
-import com.UserProfile.exception.ProfileNotFoundException;
 import com.UserProfile.entity.UserProfile;
 import com.UserProfile.service.ProfileService;
 
@@ -101,7 +98,7 @@ public class ProfileController {
 
 	// ALL POST
 	// requests---------------------------------------------------------***POST**-----SIGNUP------
-	@PostMapping(path="/addProfileInfo",produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/addProfileInfo")
 	public ResponseEntity<String> addUserProfile(@Validated @RequestBody UserProfile userProfile) {
 		/*
 		 * String s="Signup Successful"; String
@@ -111,7 +108,11 @@ public class ProfileController {
 		if(profileService.isUserProfilenameExistAlready(userProfile.getUname())) {
 			throw new ProfileDetailAlreadyExist("UserProfile already exist with username " + userProfile.getUname());
 		}
+		try {
 		profileService.addUserProfile(userProfile);
+		}catch (Exception e) {
+			return ResponseEntity.status(400).body("Bad request "+e.getMessage());
+		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(s);
 		/*
 		 * } catch (Exception e) { // TODO: handle exception e.printStackTrace(); return

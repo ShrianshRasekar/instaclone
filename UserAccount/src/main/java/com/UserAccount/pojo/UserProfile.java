@@ -1,10 +1,5 @@
 package com.UserAccount.pojo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-
 
 public class UserProfile {
 

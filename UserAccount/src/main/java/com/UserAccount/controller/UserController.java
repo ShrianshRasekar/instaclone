@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.UserAccount.exception.UserDetailAlreadyExist;
-import com.UserAccount.exception.UserNotFoundException;
 import com.UserAccount.pojo.User;
 import com.UserAccount.service.UserService;
 
@@ -125,7 +123,7 @@ public class UserController {
 
 	// ALL PUT
 	// requests----------------------------------------------------------***PUT**----------
-	@PutMapping(path="/updateUser",produces=MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path="/updateUser")
 	public ResponseEntity<String> updateUser(@Validated @RequestBody User User) {
 		String s = "Users updated";
 		userService.updateUser(User);

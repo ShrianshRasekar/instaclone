@@ -1,16 +1,15 @@
 package com.UserAccount.service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.UserAccount.dao.UserDAO;
 import com.UserAccount.exception.UserDetailsMissingException;
 import com.UserAccount.exception.UserNotFoundException;
 import com.UserAccount.pojo.User;
+import com.UserAccount.pojo.UserProfile;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -110,6 +109,7 @@ public class UserServiceImpl implements UserService {
 	// requests-------------------------------------------------------------POST-------
 	@Override
 	public User addUser(User user) {
+		
 		Userdao.save(user);
 		return user;
 	}
@@ -132,9 +132,14 @@ public class UserServiceImpl implements UserService {
 	// requests-----------------------------------------------------------------PUT---
 	@Override
 	public User updateUser(User user) {
-		// TODO Auto-generated method stub		
-		Userdao.save(user);
-		return user;
+		// TODO Auto-generated method stub			
+		
+		  User updatedUser = Userdao.save(user);
+		  updatedUser.setUserprofile(profileClient.updateUserProfileOfUser(user.
+		  getUserprofile()));
+		  return updatedUser;
+		 
+		
 	}
 
 	// ALL DELETE
