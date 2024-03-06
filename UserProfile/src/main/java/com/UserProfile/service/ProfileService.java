@@ -13,15 +13,22 @@ public interface ProfileService {
 	public List<String> isUserProfilenameExist(String uname);
 	public boolean isUserProfilenameExistAlready(String uname);
 	
+	public UserProfile getUserProfileByUname(String uname);
+	
 	//public List<String> getAllUserProfilenames();
 
 	public UserProfile addUserProfile(UserProfile UserProfile);
 
 	public List<UserProfile> addUserProfiles(List<UserProfile> ls);
-
-	public String deleteUserProfile(Long pid);
-
 	public UserProfile updateUserProfile(UserProfile UserProfile);
+	
+	//------------------------------------------------------------------------------------------------Delete
+
+	public String deleteUserProfile(Long pid);	
+	
+	public String deleteUserProfileByUname(String uname);
+
+	
 
 	//public UserProfile getUserProfileByUnameAndPassword(String uname,String password);
 

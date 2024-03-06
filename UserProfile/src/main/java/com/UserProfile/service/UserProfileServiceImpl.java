@@ -56,6 +56,13 @@ public class UserProfileServiceImpl implements ProfileService {
 		//e.equals(e.getUname()).collect(Collectors.toList()));
 		return false;
 	}
+	
+	@Override
+	public UserProfile getUserProfileByUname(String uname) {
+		
+		
+		return Profiledao.getUserProfileByUsername(uname);
+	}
 
 	/*
 	 * public List<String> getAllUserProfilenames() { if
@@ -88,6 +95,7 @@ public class UserProfileServiceImpl implements ProfileService {
 	@Override
 	public UserProfile addUserProfile(UserProfile UserProfile) {
 		Profiledao.save(UserProfile);
+		UserProfile.setPid(UserProfile.getUid());
 		return UserProfile;
 	}
 
@@ -111,6 +119,7 @@ public class UserProfileServiceImpl implements ProfileService {
 	public UserProfile updateUserProfile(UserProfile UserProfile) {
 		// TODO Auto-generated method stub
 		Profiledao.save(UserProfile);
+		
 		return UserProfile;
 	}
 
@@ -127,5 +136,20 @@ public class UserProfileServiceImpl implements ProfileService {
 		Profiledao.deleteById(pid);
 		return "Deleted UserProfile with id " + pid;
 	}
+
+	@Override
+	public String deleteUserProfileByUname(String uname) {
+		// TODO Auto-generated method stub
+		// UserProfile e=UserProfiledao.getById(eid);
+
+		if (Profiledao.isUserProfilenameExistAlready(uname).isEmpty()) {
+			throw new ProfileNotFoundException("UserProfile not exist with id " + uname);
+		}
+		
+		Profiledao.deleteByUsername(uname);
+		return "Deleted UserProfile with id " + uname;
+	}
+	
+	
 
 }

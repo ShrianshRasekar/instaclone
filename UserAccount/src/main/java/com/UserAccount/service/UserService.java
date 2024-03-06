@@ -2,6 +2,7 @@ package com.UserAccount.service;
 
 import java.util.List;
 
+import com.UserAccount.exception.UserNotFoundException;
 import com.UserAccount.pojo.User;
 
 public interface UserService {
@@ -24,5 +25,7 @@ public interface UserService {
 	public User updateUser(User User);
 
 	public User getUserByUnameAndPassword(String uname,String password);
+
+	public String deleteUserByUname(String uname) throws UserNotFoundException;
 
 }

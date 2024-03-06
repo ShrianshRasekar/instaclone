@@ -1,6 +1,7 @@
 package com.UserAccount.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException("No User Exist till now");
 		}
 		List<User> users=Userdao.findAll();
-		List<User> newUsersList=users.stream().map(user->{user.setUserprofile(profileClient.getUserProfileOfUser(user.getUid()));
+		List<User> newUsersList=users.stream().map(user->{user.setUserprofile(profileClient.getUserProfileByUsername(user.getUname()));
 		return user;
 		}).collect(Collectors.toList());
 		return newUsersList;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
 		 */
 		User user=Userdao.findById(uid).orElseThrow(()->new UserNotFoundException("User not exist with id " + uid));
 		
-		user.setUserprofile(profileClient.getUserProfileOfUser(user.getUid()));
+		user.setUserprofile(profileClient.getUserProfileByUsername(user.getUname()));
 		return user;
 	}
 
@@ -95,7 +96,9 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException("Login Failed!! Enter Correct Details");
 		}
 
-		return Userdao.getUserByUnameAndPassword(uname, password);
+		User user= Userdao.getUserByUnameAndPassword(uname, password);
+		user.setUserprofile(profileClient.getUserProfileOfUser(user.getUid()));
+		return user;
 	}
 	/*
 	 * @Override
@@ -109,7 +112,7 @@ public class UserServiceImpl implements UserService {
 	// requests-------------------------------------------------------------POST-------
 	@Override
 	public User addUser(User user) {
-		
+		//profileClient.addUserProfile(user.getUserprofile());
 		Userdao.save(user);
 		return user;
 	}
@@ -145,15 +148,38 @@ public class UserServiceImpl implements UserService {
 	// ALL DELETE
 	// requests----------------------------------------------------------------DELETE----
 	@Override
-	public String deleteUser(Long uid) {
+	public String deleteUser(Long uid)throws UserNotFoundException  {
 		// TODO Auto-generated method stub
 		// User e=Userdao.getById(eid);
-
-		if (Userdao.findById(uid).isEmpty()) {
+		Optional<User> u=Userdao.findById(uid);
+		User user=u.get();
+		if (u.isEmpty()) {
 			throw new UserNotFoundException("User not exist with id " + uid);
 		}
-		Userdao.deleteById(uid);
+		
+	    Userdao.deleteById(uid);
+	    
 		return "Deleted User with id " + uid;
+	}
+	
+	@Override
+	public String deleteUserByUname(String uname)throws UserNotFoundException  {
+		// TODO Auto-generated method stub
+		// User e=Userdao.getById(eid);
+		
+		if (Userdao.isUsernameExistAlready(uname).isEmpty()) {
+			throw new UserNotFoundException("User not exist with uname " + uname);
+		}
+		
+		if(profileClient.getUserProfileByUsername(uname)== null) {
+			throw new UserNotFoundException("Userprofile not found with uname "+uname);
+		}else {
+		profileClient.deleteUserProfileByUname(uname);
+		}
+		
+		Userdao.deleteByUsername(uname);
+	    
+		return "Deleted User with Username " + uname;
 	}
 
 }

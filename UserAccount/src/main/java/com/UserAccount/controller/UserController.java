@@ -82,12 +82,16 @@ public class UserController {
 
 	}
 
+	// using request Param
 	// http://localhost:8000/user/login/user?uname=me@15&password=me1115
 	@GetMapping(path="/login/user",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getUserForLoginRp(@Validated @RequestParam String uname, @Validated @RequestParam String password) {
 		String s = "Login Successful";
 		// String f="Login Failed!! Enter Correct Details";
-		userService.getUserByUnameAndPassword(uname, password);
+		User user = userService.getUserByUnameAndPassword(uname, password);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 		return ResponseEntity.of(Optional.of(s));
 
 	}
@@ -135,11 +139,20 @@ public class UserController {
 	// requests-------------------------------------------------------***Delete**-------------
 	@DeleteMapping("/{uid}")
 	public ResponseEntity<String> deleteUser(@PathVariable Long uid) {
-		userService.deleteUser(uid);
-		String s = "User deleted having id " + uid;
+		
+		String s = userService.deleteUser(uid);
 		return ResponseEntity.status(HttpStatus.OK).body(s);
 
 	}
+	
+	@DeleteMapping("/username/{uname}")
+	public ResponseEntity<String> deleteUserByUsername(@PathVariable String uname) {
+		
+		String s = userService.deleteUserByUname(uname);
+		return ResponseEntity.status(HttpStatus.OK).body(s);
+
+	}
+	
 	
 	
 }

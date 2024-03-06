@@ -3,9 +3,11 @@ package com.UserAccount.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.UserAccount.pojo.User;
 
@@ -26,4 +28,9 @@ public interface UserDAO extends JpaRepository<User, Long>{
 	
 	@Query("select uname From User u")
 	public List<String> getAllUsername();
+	
+	 @Query("DELETE FROM User u WHERE u.uname = :un")
+	 @Modifying
+	 @Transactional
+	public void deleteByUsername(@Param("un") String uname);
 }

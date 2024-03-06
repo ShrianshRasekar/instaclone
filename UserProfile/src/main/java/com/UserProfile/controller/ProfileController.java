@@ -54,7 +54,19 @@ public class ProfileController {
 		logger.info("Get user with id "+pid);
 		return profileService.getUserProfile(pid);
 	}
+	
+	@GetMapping(path="/{uname}",produces=MediaType.APPLICATION_JSON_VALUE)
+	public UserProfile getUserProfileByUsername(@PathVariable String uname) {
+		/*
+		 * UserProfile user=profileService.getUserProfile(uid); if(user==null) { return
+		 * ResponseEntity.status(HttpStatus.NOT_FOUND).build(); } return
+		 * ResponseEntity.of(Optional.of(user));
+		 */
+		logger.info("Get user with uname "+uname);
+		return profileService.getUserProfileByUname(uname);
+	}
 
+	
 	/*
 	 * @GetMapping("/{uname}") public ResponseEntity<List<String>>
 	 * isUserProfilenameExist(@Validated @PathVariable String uname) { List<String>
@@ -66,6 +78,7 @@ public class ProfileController {
 	 * getAllUserProfilenames() { return
 	 * ResponseEntity.of(Optional.of(profileService.getAllUserProfilenames())); }
 	 */
+	 
 
 	// -----------------------------------------------------------------------------------------------------LOGIN
 	// REQUESTS---------
@@ -141,10 +154,18 @@ public class ProfileController {
 
 	// ALL Delete
 	// requests-------------------------------------------------------***Delete**-------------
-	@DeleteMapping("/{uid}")
-	public ResponseEntity<String> deleteUserProfile(@PathVariable Long uid) {
-		profileService.deleteUserProfile(uid);
-		String s = "UserProfile deleted having id " + uid;
+	@DeleteMapping("/{pid}")
+	public ResponseEntity<String> deleteUserProfile(@PathVariable Long pid) {
+		profileService.deleteUserProfile(pid);
+		String s = "UserProfile deleted having id " + pid;
+		return ResponseEntity.status(HttpStatus.OK).body(s);
+
+	}
+	
+	@DeleteMapping("/username/{uname}")
+	public ResponseEntity<String> deleteUserProfileByUname(@PathVariable String uname) {
+		profileService.deleteUserProfileByUname(uname);
+		String s = "UserProfile deleted having id " + uname;
 		return ResponseEntity.status(HttpStatus.OK).body(s);
 
 	}
