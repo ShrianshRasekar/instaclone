@@ -1,6 +1,7 @@
 package com.UserProfile.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,7 +38,7 @@ public class ProfileController {
 
 
 	// ALL GET
-	// requests--------------------------------------------------------***GET**------------
+	// requests------------------------------------------------------------------------***GET**------------
 	@GetMapping(path="/profiles",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserProfile>> getUserProfiles() {
 		logger.info("Getting all users");
@@ -110,7 +112,7 @@ public class ProfileController {
 	 */
 
 	// ALL POST
-	// requests---------------------------------------------------------***POST**-----SIGNUP------
+	// requests-----------------------------------------------------------------------***POST**-----SIGNUP------
 	@PostMapping("/addProfileInfo")
 	public ResponseEntity<String> addUserProfile(@Validated @RequestBody UserProfile userProfile) {
 		/*
@@ -143,7 +145,7 @@ public class ProfileController {
 	}
 
 	// ALL PUT
-	// requests----------------------------------------------------------***PUT**----------
+	// requests--------------------------------------------------------------------------***PUT**----------
 	@PutMapping(path="/updateUserProfile",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateUserProfile(@Validated @RequestBody UserProfile UserProfile) {
 		String s = "UserProfiles updated";
@@ -151,9 +153,27 @@ public class ProfileController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(s);
 
 	}
+	// ALL Patch
+    // requests-------------------------------------------------------------------------***Patch**-------------
+	@PatchMapping("/update-bio")
+    public ResponseEntity<String> updateUserProfileBio(@RequestBody Map<String, String> updates) {
+        String username = updates.get("uname");
+        String bio = updates.get("bio");
 
-	// ALL Delete
-	// requests-------------------------------------------------------***Delete**-------------
+        if (username == null || username.isBlank()) {
+            return ResponseEntity.badRequest().body("Username must be provided");
+        }
+
+        // Check if bio is null, empty, or contains only whitespace
+        if (bio == null || bio.isBlank()) {
+            return ResponseEntity.badRequest().body("Bio cannot be empty");
+        }
+
+        // Call service to update bio
+        profileService.updateUserProfileBio(username, bio);
+        return ResponseEntity.ok("User bio updated successfully");
+    }// ALL Delete
+	// requests------------------------------------------------------------------------***Delete**-------------
 	@DeleteMapping("/{pid}")
 	public ResponseEntity<String> deleteUserProfile(@PathVariable Long pid) {
 		profileService.deleteUserProfile(pid);

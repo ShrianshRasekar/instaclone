@@ -22,6 +22,8 @@ public interface ProfileService {
 	public List<UserProfile> addUserProfiles(List<UserProfile> ls);
 	public UserProfile updateUserProfile(UserProfile UserProfile);
 	
+	public UserProfile updateUserProfileBio(String username, String bio);
+	
 	//------------------------------------------------------------------------------------------------Delete
 
 	public String deleteUserProfile(Long pid);	
