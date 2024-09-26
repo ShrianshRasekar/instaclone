@@ -24,6 +24,10 @@ public interface ProfileDAO extends JpaRepository<UserProfile, Long>{
 	@Query("select u From UserProfile u WHERE u.uname=:un")
 	public UserProfile getUserProfileByUsername(@Param("un") String uname);
 	
+	@Modifying
+	@Query("UPDATE UserProfile u SET u.bio=:bio WHERE u.uname=:un ")
+	public int updateUserProfileBio(@Param("un") String username,@Param("bio") String bio);
+	
 	//--------------------------------------------------------------------------------------------------------------Delete
 	
 	@Query("DELETE FROM UserProfile u WHERE u.uname = :un")

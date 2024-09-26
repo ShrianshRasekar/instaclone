@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.UserProfile.dao.ProfileDAO;
 import com.UserProfile.exception.ProfileNotFoundException;
+
+import jakarta.transaction.Transactional;
+
 import com.UserProfile.entity.UserProfile;
 
 @Service
@@ -122,7 +125,19 @@ public class UserProfileServiceImpl implements ProfileService {
 		
 		return UserProfile;
 	}
-
+	// ALL Patch
+	// requests-----------------------------------------------------------------Patch---
+	
+	@Transactional
+	@Override
+	public UserProfile updateUserProfileBio(String username, String bio) {
+		if(Profiledao.isUserProfilenameExist(username).isEmpty()) { 
+			throw new ProfileNotFoundException("UserProfile not exist with UserProfilename '" +username + "' "); 
+			}
+		Profiledao.updateUserProfileBio( username, bio);
+		return Profiledao.getUserProfileByUsername(username);
+	}
+		
 	// ALL DELETE
 	// requests----------------------------------------------------------------DELETE----
 	@Override
@@ -149,6 +164,8 @@ public class UserProfileServiceImpl implements ProfileService {
 		Profiledao.deleteByUsername(uname);
 		return "Deleted UserProfile with id " + uname;
 	}
+
+	
 	
 	
 
