@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css'; // Import the CSS file for styling
+import { Card, CardBody } from 'reactstrap';
 
 function Sidebar  ({currentProfile}) {
   return (
@@ -9,15 +10,17 @@ function Sidebar  ({currentProfile}) {
         padding: "20px",
         color: "white"
       }} className="sidebar">
-     <h2>INSTAGRAM</h2>
-     <ul style={{ listStyleType: "none", padding: 0 }}>
+        <Card><CardBody>
+        <h2>INSTAGRAM</h2>
+         <ul style={{ listStyleType: "none", padding: 0 }}>
         <li><a>HOME</a></li>
         <li><a>{currentProfile}</a></li>
 
         <li><a>MORE</a></li>
 
      </ul>
-      
+     </CardBody>
+     </Card>
     </div>
   );
 };

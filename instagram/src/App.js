@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import MiddleContent from './components/MiddleContent';
+import AddUserProfile from './components/AddUserProfile';
 
 function App() {
  return(
@@ -9,7 +10,7 @@ function App() {
 
        <Sidebar currentProfile="MyProfile"/>
        <MiddleContent/>
-       <Sidebar/>
+       <AddUserProfile/>
   </div>
  );
 }
