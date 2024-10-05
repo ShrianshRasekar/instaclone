@@ -36,6 +36,17 @@ public class ProfileController {
 	
 	Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
+	@GetMapping(path="/{num1}/{num2}",produces=MediaType.APPLICATION_JSON_VALUE)
+	public static long add(@PathVariable long num1, @PathVariable long num2) {
+		/*
+		 * UserProfile user=profileService.getUserProfile(uid); if(user==null) { return
+		 * ResponseEntity.status(HttpStatus.NOT_FOUND).build(); } return
+		 * ResponseEntity.of(Optional.of(user));
+		 */
+		//logger.info("Get user with id "+pid);
+		return (num1+num2);
+	}
+	
 
 	// ALL GET
 	// requests------------------------------------------------------------------------***GET**------------
