@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css'; // Import the CSS file for styling
 import { Card, CardBody } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 function Sidebar  ({currentProfile}) {
   return (
@@ -13,10 +14,10 @@ function Sidebar  ({currentProfile}) {
         <Card><CardBody>
         <h2>INSTAGRAM</h2>
          <ul style={{ listStyleType: "none", padding: 0 }}>
-        <li><a>HOME</a></li>
-        <li><a>{currentProfile}</a></li>
-
-        <li><a>MORE</a></li>
+        <li><Link to="/middleContent">HOME</Link></li>
+        <li><Link to="/middleContent">{currentProfile}</Link></li>
+        <li><Link  to="/addUserProfile">AddUserProfile</Link></li>
+        <li><Link to="/middleContent">More</Link></li>
 
      </ul>
      </CardBody>

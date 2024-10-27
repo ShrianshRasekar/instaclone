@@ -55,14 +55,15 @@ function AddUserProfile() {
   };
 
   return (
-    <Container className="mt-5">
-      <Row>
-        <Col md={{ size: 6, offset: 3 }}>
+    <Container className="mt-5" style={{ height: '100%' }}>
+      <Row className="justify-content-center">
+        <Col md={{ size: 6 }} style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{
             backgroundColor: '#f0f8ff',  // Light blue background color
             padding: '20px',
             border: '2px solid #007bff',  // Blue border
             borderRadius: '10px',         // Rounded corners
+            width: '100%',                 // Full width for the card
           }}>
             <h2 className="text-center mb-4">Create User Profile</h2>
 
