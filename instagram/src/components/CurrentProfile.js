@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClone } from '@fortawesome/free-regular-svg-icons/faClone';
+import { faClipboard } from '@fortawesome/free-regular-svg-icons/faClipboard';
+import { faUser } from '@fortawesome/free-regular-svg-icons/faUser';
+import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons/faShareFromSquare';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons/faHandshake';
 
 function CurrentProfile({ setFullName }) {
   const [username, setUsername] = useState('');
@@ -54,11 +60,26 @@ function CurrentProfile({ setFullName }) {
           borderRadius: '8px'
         }}>
           <h3>{profile.fullName}</h3>
-          <p><strong>Username:</strong> {profile.uname}</p>
-          <p><strong>Bio:</strong> {profile.bio}</p>
-          <p><strong>Posts:</strong> {profile.posts}</p>
-          <p><strong>Followers:</strong> {profile.followers}</p>
-          <p><strong>Following:</strong> {profile.following}</p>
+          <li style={{ display: 'flex', alignItems: 'center' }}>
+          <FontAwesomeIcon icon={faUser} />
+          <p><strong> Username:</strong> {profile.uname}</p>
+          </li>
+          <li style={{ display: 'flex', alignItems: 'center' }}>
+          <FontAwesomeIcon icon={faClipboard} />
+          <p><strong> Bio:</strong> {profile.bio}</p>
+          </li>
+          <li style={{ display: 'flex', alignItems: 'center' }}>
+          <FontAwesomeIcon icon={faClone} />
+          <p><strong> Posts:</strong> {profile.posts}</p>
+          </li>
+          <li style={{ display: 'flex', alignItems: 'center' }}>
+          <FontAwesomeIcon icon={faHandshake} />
+          <p><strong> Followers:</strong> {profile.followers}</p>
+          </li>
+          <li style={{ display: 'flex', alignItems: 'center' }}>
+          <FontAwesomeIcon icon={faShareFromSquare} />
+          <p><strong> Following:</strong> {profile.following}</p>
+          </li>
         </div>
       )}
     </div>
