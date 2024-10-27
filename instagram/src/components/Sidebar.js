@@ -40,11 +40,11 @@ function Sidebar({ currentProfile }) {
             </li>
             <li style={{ display: 'flex', alignItems: 'center' }}>
               <FontAwesomeIcon icon={faHeart} />
-              <Link to="/middleContent" style={{ marginLeft: '10px', color: 'white' }}>Notification</Link>
+              <Link to="/notification" style={{ marginLeft: '10px', color: 'white' }}>Notification</Link>
             </li>
             <li style={{ display: 'flex', alignItems: 'center' }}>
               <FontAwesomeIcon icon={faCircleUser} />
-              <Link to="/middleContent" style={{ marginLeft: '10px', color: 'white' }}>{currentProfile}</Link>
+              <Link to="/currentProfile" style={{ marginLeft: '10px', color: 'white' }}>{currentProfile}</Link>
             </li>
             <li style={{ display: 'flex', alignItems: 'center' }}>
               <FontAwesomeIcon icon={faIdBadge} />
