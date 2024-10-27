@@ -10,21 +10,27 @@ import {
      Link
    } from "react-router-dom";
 import ExtraContent from './components/ExtraCotent';
-   
+ 
 function App() {
      return (
        <Router>
          <div style={{ display: "flex", width: "100vw", height: "100vh" }}>
            <Sidebar currentProfile="MyProfile" style={{ flex: "1 1 20%", backgroundColor: "#f0f0f0" }} />
-           
-           <div style={{ flex: "1 1 40%", display: "flex", flexDirection: "column" }}>
-             <Routes style={{ flexGrow: 1 }}>
+   
+           {/* Vertical Divider */}
+           <div style={{ width: '1px', backgroundColor: 'lightgray' }} />
+   
+           <div style={{ flex: "1 1 50%", display: "flex", flexDirection: "column" }}>
+             <Routes>
                <Route path="/middleContent" element={<MiddleContent />} />
                <Route path="/addUserProfile" element={<AddUserProfile />} />
              </Routes>
            </div>
-           
-           <ExtraContent style={{ flex: "1 1 40%", backgroundColor: "#e0e0e0" }} />
+   
+           {/* Vertical Divider */}
+           <div style={{ width: '1px', backgroundColor: 'lightgray' }} />
+   
+           <ExtraContent style={{ flex: "1 1 30%", backgroundColor: "#e0e0e0" }} />
          </div>
        </Router>
      );
