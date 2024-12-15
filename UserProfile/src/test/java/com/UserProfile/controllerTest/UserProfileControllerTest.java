@@ -23,7 +23,6 @@ import com.UserProfile.service.ProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,69 +31,61 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserProfileControllerTest {
-	
-	private MockMvc mockMvc;
-	
-	@Mock
+
+    private MockMvc mockMvc;
+
+    @Mock
     private ProfileService profileService;
 
     @InjectMocks
     private ProfileController userProfileController;
 
-	
-	ObjectMapper objectMapper=new ObjectMapper();
-	ObjectWriter objectWriter=objectMapper.writer();
-	
-	@BeforeClass
-	public static void init() {
-		System.out.println(" before test");
-		System.out.println("Started test: "+new Date());
-	}
-	
-	@BeforeEach
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectWriter objectWriter = objectMapper.writer();
+
+    @BeforeClass
+    public static void init() {
+        System.out.println("Before test");
+        System.out.println("Started test: " + new Date());
+    }
+
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userProfileController).build();
     }
-	
-	@Test
+
+    @Test
     public void testGetUserProfiles() throws Exception {
-        // Mocking the service response
-		List<UserProfile> mockProfiles = Arrays.asList(
-			    new UserProfile(1, "John Doe", "Johnathan Doe", "Software Developer", 50, 100, 200, 123),
-			    new UserProfile(2, "Jane Doe", "Jane Doe", "Product Manager", 30, 150, 250, 124)
-			);
+        // Arrange
+        List<UserProfile> mockProfiles = Arrays.asList(
+                new UserProfile(1, "John Doe", "Johnathan Doe", "Software Developer", 50, 100, 200, 123),
+                new UserProfile(2, "Jane Doe", "Jane Doe", "Product Manager", 30, 150, 250, 124)
+        );
 
         when(profileService.getUserProfiles()).thenReturn(mockProfiles);
 
-        // Performing the GET request and asserting the result
-        mockMvc.perform(get("/profiles")
+        // Act & Assert
+        mockMvc.perform(get("/userprofile/profiles")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("["
-                		 + "{\"pid\":1,\"uname\":\"John Doe\",\"fullName\":\"Johnathan Doe\",\"bio\":\"Software Developer\",\"posts\":50,\"followers\":100,\"following\":200,\"uid\":123},"
-                		    + "{\"pid\":2,\"uname\":\"Jane Doe\",\"fullName\":\"Jane Doe\",\"bio\":\"Product Manager\",\"posts\":30,\"followers\":150,\"following\":250,\"uid\":124}"
-                		    + "]"));
-        
-        System.out.println("get profiles");
+                .andExpect(content().json("[" +
+                        "{\"pid\":1,\"uname\":\"John Doe\",\"fullName\":\"Johnathan Doe\",\"bio\":\"Software Developer\",\"posts\":50,\"followers\":100,\"following\":200,\"uid\":123}," +
+                        "{\"pid\":2,\"uname\":\"Jane Doe\",\"fullName\":\"Jane Doe\",\"bio\":\"Product Manager\",\"posts\":30,\"followers\":150,\"following\":250,\"uid\":124}" +
+                        "]"));
     }
-	
-	@Test
-	public void addTest() {
-		System.out.println(" add test");
-	 long result=ProfileController.add(4,6);
-	 long expected=10;
-	 Assert.assertEquals(expected, result);
-	}
-	
-	
-	
-	
-	@AfterClass
-	public static void clean() {
-		System.out.println(" after test");
-		System.out.println("Started test: "+new Date());
-	}
-	
 
+    @Test
+    public void addTest() {
+        System.out.println("Add test");
+        long result = ProfileController.add(4, 6);
+        long expected = 10;
+        Assert.assertEquals(expected, result);
+    }
+
+    @AfterClass
+    public static void clean() {
+        System.out.println("After test");
+        System.out.println("Ended test: " + new Date());
+    }
 }
