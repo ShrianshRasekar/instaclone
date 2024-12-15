@@ -18,14 +18,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.UserProfile.controller.ProfileController;
+import com.UserProfile.dao.ProfileDAO;
 import com.UserProfile.entity.UserProfile;
 import com.UserProfile.service.ProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import org.springframework.http.MediaType;
+
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,6 +40,9 @@ public class UserProfileControllerTest {
 
     @Mock
     private ProfileService profileService;
+    
+    @Mock
+    private ProfileDAO profileDao;
 
     @InjectMocks
     private ProfileController userProfileController;
@@ -54,7 +61,7 @@ public class UserProfileControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userProfileController).build();
     }
-
+    
     @Test
     public void testGetUserProfiles() throws Exception {
         // Arrange
@@ -73,6 +80,38 @@ public class UserProfileControllerTest {
                         "{\"pid\":1,\"uname\":\"John Doe\",\"fullName\":\"Johnathan Doe\",\"bio\":\"Software Developer\",\"posts\":50,\"followers\":100,\"following\":200,\"uid\":123}," +
                         "{\"pid\":2,\"uname\":\"Jane Doe\",\"fullName\":\"Jane Doe\",\"bio\":\"Product Manager\",\"posts\":30,\"followers\":150,\"following\":250,\"uid\":124}" +
                         "]"));
+    }
+    
+    @Test
+    public void testGetUserProfile() throws Exception {
+        // Arrange
+        UserProfile mockProfile =
+                new UserProfile(1, "John Doe", "Johnathan Doe", "Software Developer", 50, 100, 200, 123);
+
+        when(profileService.getUserProfile(1L)).thenReturn(mockProfile);
+
+        // Act & Assert
+        mockMvc.perform(get("/userprofile/profileid/{pid}", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        "{\"pid\":1,\"uname\":\"John Doe\",\"fullName\":\"Johnathan Doe\",\"bio\":\"Software Developer\",\"posts\":50,\"followers\":100,\"following\":200,\"uid\":123}"));
+    }
+
+    
+    @Test
+    public void testGetUserProfileByUsername() throws Exception {
+        // Arrange
+        UserProfile mockProfile = new UserProfile(1, "John Doe", "Johnathan Doe", "Software Developer", 50, 100, 200, 123);
+
+        when(profileService.getUserProfileByUname("John Doe")).thenReturn(mockProfile);
+
+        // Act & Assert
+        mockMvc.perform(get("/userprofile/{uname}", "John Doe")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        "{\"pid\":1,\"uname\":\"John Doe\",\"fullName\":\"Johnathan Doe\",\"bio\":\"Software Developer\",\"posts\":50,\"followers\":100,\"following\":200,\"uid\":123}"));
     }
 
     @Test
