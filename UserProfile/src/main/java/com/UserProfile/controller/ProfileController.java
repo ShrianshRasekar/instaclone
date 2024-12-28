@@ -158,10 +158,10 @@ public class ProfileController {
 	// ALL PUT
 	// requests--------------------------------------------------------------------------***PUT**----------
 	@PutMapping(path="/updateUserProfile",produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateUserProfile(@Validated @RequestBody UserProfile UserProfile) {
+	public UserProfile updateUserProfile(@Validated @RequestBody UserProfile UserProfile) {
 		String s = "UserProfiles updated";
-		profileService.updateUserProfile(UserProfile);
-		return ResponseEntity.status(HttpStatus.CREATED).body(s);
+		UserProfile u=profileService.updateUserProfile(UserProfile);
+		return u;
 
 	}
 	// ALL Patch
