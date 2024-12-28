@@ -4,6 +4,7 @@ import com.Auth_service.dto.AuthRequest;
 import com.Auth_service.entity.UserCredential;
 import com.Auth_service.service.Authservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +20,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public String addNewUser(@RequestBody UserCredential user) {
+    public ResponseEntity<String> addNewUser(@RequestBody UserCredential user) {
     	//System.out.println("register user "+user.getName()+" "+user.getPassword()+" "+user.getEmail());
 
         return service.saveUser(user);
