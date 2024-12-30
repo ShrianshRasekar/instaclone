@@ -1,11 +1,9 @@
 package com.UserAccount.pojo;
 
-
 public class UserProfile {
 
-	
 	private long pid;
-	
+
 	private String uname;
 
 	/*
@@ -14,24 +12,24 @@ public class UserProfile {
 	 * @Size(min=2,message = "FullName must have atleast 2 characters")
 	 */
 	private String fullName;
-	
+
 	private String bio;
-	
-	private long posts;
-	
+
+	private byte[] posts;
+
 	private long followers;
-	
+
 	private long following;
-	
+
 	private long uid;
-	
+
 	public UserProfile() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public UserProfile(long pid, String uname, String fullName, String bio, long posts, long followers,
-			long following,long uid) {
+
+	public UserProfile(long pid, String uname, String fullName, String bio, byte[] posts, long followers,
+			long following, long uid) {
 		super();
 		this.pid = pid;
 		this.uname = uname;
@@ -42,8 +40,6 @@ public class UserProfile {
 		this.following = following;
 		this.uid = uid;
 	}
-
-	
 
 	public long getPid() {
 		return pid;
@@ -77,11 +73,11 @@ public class UserProfile {
 		this.bio = bio;
 	}
 
-	public long getPosts() {
+	public byte[] getPosts() { // Updated getter for posts
 		return posts;
 	}
 
-	public void setPosts(long posts) {
+	public void setPosts(byte[] posts) { // Updated setter for posts
 		this.posts = posts;
 	}
 
@@ -112,9 +108,8 @@ public class UserProfile {
 	@Override
 	public String toString() {
 		return "UserProfile [pid=" + pid + ", uname=" + uname + ", fullName=" + fullName + ", bio=" + bio + ", posts="
-				+ posts + ", followers=" + followers + ", following=" + following + ", uid=" + uid + "]";
+				+ (posts != null ? posts.length + " bytes" : "null") + ", followers=" + followers + ", following="
+				+ following + ", uid=" + uid + "]";
 	}
-	
-	
 
 }

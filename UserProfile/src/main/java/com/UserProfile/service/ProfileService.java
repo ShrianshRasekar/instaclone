@@ -6,32 +6,30 @@ import com.UserProfile.entity.UserProfile;
 
 public interface ProfileService {
 
-	public List<UserProfile> getUserProfiles();
+    public List<UserProfile> getUserProfiles();
 
-	public UserProfile getUserProfile(Long pid);
+    public UserProfile getUserProfile(Long pid);
 
-	public List<String> isUserProfilenameExist(String uname);
-	public boolean isUserProfilenameExistAlready(String uname);
-	
-	public UserProfile getUserProfileByUname(String uname);
-	
-	//public List<String> getAllUserProfilenames();
+    public List<String> isUserProfilenameExist(String uname);
+    public boolean isUserProfilenameExistAlready(String uname);
+    
+    public UserProfile getUserProfileByUname(String uname);
 
-	public UserProfile addUserProfile(UserProfile UserProfile);
+    public UserProfile addUserProfile(UserProfile userProfile);
 
-	public List<UserProfile> addUserProfiles(List<UserProfile> ls);
-	public UserProfile updateUserProfile(UserProfile UserProfile);
-	
-	public UserProfile updateUserProfileBio(String username, String bio);
-	
-	//------------------------------------------------------------------------------------------------Delete
+    public List<UserProfile> addUserProfiles(List<UserProfile> ls);
 
-	public String deleteUserProfile(Long pid);	
-	
-	public String deleteUserProfileByUname(String uname);
+    public UserProfile updateUserProfile(UserProfile userProfile);
 
-	
+    public UserProfile updateUserProfileBio(String username, String bio);
 
-	//public UserProfile getUserProfileByUnameAndPassword(String uname,String password);
+    public String deleteUserProfile(Long pid);    
+    
+    public String deleteUserProfileByUname(String uname);
 
+    // New methods for the posts field
+    public byte[] getPostsByUsername(String username);
+    public byte[] getPostsById(Long pid);
+    public UserProfile updatePostsByUsername(String username, byte[] posts);
+    public String deletePostsByUsername(String username);
 }

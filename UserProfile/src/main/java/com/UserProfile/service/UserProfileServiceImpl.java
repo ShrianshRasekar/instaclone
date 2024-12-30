@@ -37,15 +37,16 @@ public class UserProfileServiceImpl implements ProfileService {
 	}
 
 	public List<String> isUserProfilenameExist(String ename) {
-		if(Profiledao.isUserProfilenameExist(ename).isEmpty()) { 
-			throw new ProfileNotFoundException("UserProfile not exist with UserProfilename '" +ename + "' "); 
-			}
+		if (Profiledao.isUserProfilenameExist(ename).isEmpty()) {
+			throw new ProfileNotFoundException("UserProfile not exist with UserProfilename '" + ename + "' ");
+		}
 		List<String> u = Profiledao.isUserProfilenameExist(ename);
 		/*
 		 * List<String> UserProfilenames = u.stream().filter(e -> //
 		 * e.equals(e.getUname()).collect(Collectors.toList()));
 		 */
-	  return u; }
+		return u;
+	}
 
 	public boolean isUserProfilenameExistAlready(String ename) {
 		String s = Profiledao.isUserProfilenameExistAlready(ename);
@@ -55,16 +56,33 @@ public class UserProfileServiceImpl implements ProfileService {
 		if (s.equals(ename)) {
 			return true;
 		} // List<String> UserProfilenames =
-		//UserProfile.stream().filter(e -> //
-		//e.equals(e.getUname()).collect(Collectors.toList()));
+			// UserProfile.stream().filter(e -> //
+			// e.equals(e.getUname()).collect(Collectors.toList()));
 		return false;
 	}
-	
+
 	@Override
 	public UserProfile getUserProfileByUname(String uname) {
-		
-		
+
 		return Profiledao.getUserProfileByUsername(uname);
+	}
+
+	@Override
+	public byte[] getPostsByUsername(String username) {
+		byte[] posts = Profiledao.getPostsByUsername(username);
+		if (posts == null) {
+			throw new ProfileNotFoundException("No posts found for username: " + username);
+		}
+		return posts;
+	}
+
+	@Override
+	public byte[] getPostsById(Long pid) {
+		byte[] posts = Profiledao.getPostsById(pid);
+		if (posts == null) {
+			throw new ProfileNotFoundException("No posts found for ID: " + pid);
+		}
+		return posts;
 	}
 
 	/*
@@ -122,22 +140,32 @@ public class UserProfileServiceImpl implements ProfileService {
 	public UserProfile updateUserProfile(UserProfile UserProfile) {
 		// TODO Auto-generated method stub
 		Profiledao.save(UserProfile);
-		
+
 		return UserProfile;
+	}
+
+	@Transactional
+	@Override
+	public UserProfile updatePostsByUsername(String username, byte[] posts) {
+		if (Profiledao.isUserProfilenameExist(username).isEmpty()) {
+			throw new ProfileNotFoundException("UserProfile not exist with username: " + username);
+		}
+		Profiledao.updatePostsByUsername(username, posts);
+		return Profiledao.getUserProfileByUsername(username);
 	}
 	// ALL Patch
 	// requests-----------------------------------------------------------------Patch---
-	
+
 	@Transactional
 	@Override
 	public UserProfile updateUserProfileBio(String username, String bio) {
-		if(Profiledao.isUserProfilenameExist(username).isEmpty()) { 
-			throw new ProfileNotFoundException("UserProfile not exist with UserProfilename '" +username + "' "); 
-			}
-		Profiledao.updateUserProfileBio( username, bio);
+		if (Profiledao.isUserProfilenameExist(username).isEmpty()) {
+			throw new ProfileNotFoundException("UserProfile not exist with UserProfilename '" + username + "' ");
+		}
+		Profiledao.updateUserProfileBio(username, bio);
 		return Profiledao.getUserProfileByUsername(username);
 	}
-		
+
 	// ALL DELETE
 	// requests----------------------------------------------------------------DELETE----
 	@Override
@@ -160,13 +188,19 @@ public class UserProfileServiceImpl implements ProfileService {
 		if (Profiledao.isUserProfilenameExistAlready(uname).isEmpty()) {
 			throw new ProfileNotFoundException("UserProfile not exist with id " + uname);
 		}
-		
+
 		Profiledao.deleteByUsername(uname);
 		return "Deleted UserProfile with id " + uname;
 	}
 
-	
-	
-	
+	@Transactional
+	@Override
+	public String deletePostsByUsername(String username) {
+		if (Profiledao.isUserProfilenameExist(username).isEmpty()) {
+			throw new ProfileNotFoundException("UserProfile not exist with username: " + username);
+		}
+		Profiledao.deletePostsByUsername(username);
+		return "Deleted posts for username: " + username;
+	}
 
 }

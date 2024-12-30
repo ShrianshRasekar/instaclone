@@ -3,125 +3,117 @@ package com.UserProfile.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "uprofiles")
 public class UserProfile {
 
-	@jakarta.persistence.Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private long pid;
-	
-	private String uname;
+    @jakarta.persistence.Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long pid;
 
-	/*
-	 * @NotEmpty
-	 * 
-	 * @Size(min=2,message = "FullName must have atleast 2 characters")
-	 */
-	private String fullName;
-	
-	private String bio;
-	
-	private long posts;
-	
-	private long followers;
-	
-	private long following;
-	
-	private long uid;
-	
-	public UserProfile() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public UserProfile(long pid, String uname, String fullName, String bio, long posts, long followers,
-			long following,long uid) {
-		super();
-		this.pid = pid;
-		this.uname = uname;
-		this.fullName = fullName;
-		this.bio = bio;
-		this.posts = posts;
-		this.followers = followers;
-		this.following = following;
-		this.uid = uid;
-	}
+    private String uname;
 
-	
+    private String fullName;
 
-	public long getPid() {
-		return pid;
-	}
+    private String bio;
 
-	public void setPid(long pid) {
-		this.pid = pid;
-	}
+    @Lob // Large Object Annotation for storing binary data
+    private byte[] posts; // Changed from long to byte[] to store image/video data
 
-	public String getUname() {
-		return uname;
-	}
+    private long followers;
 
-	public void setUname(String uname) {
-		this.uname = uname;
-	}
+    private long following;
 
-	public String getFullName() {
-		return fullName;
-	}
+    private long uid;
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public UserProfile() {
+        super();
+    }
 
-	public String getBio() {
-		return bio;
-	}
+    public UserProfile(long pid, String uname, String fullName, String bio, byte[] posts, long followers,
+                       long following, long uid) {
+        super();
+        this.pid = pid;
+        this.uname = uname;
+        this.fullName = fullName;
+        this.bio = bio;
+        this.posts = posts;
+        this.followers = followers;
+        this.following = following;
+        this.uid = uid;
+    }
 
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
+    public long getPid() {
+        return pid;
+    }
 
-	public long getPosts() {
-		return posts;
-	}
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
 
-	public void setPosts(long posts) {
-		this.posts = posts;
-	}
+    public String getUname() {
+        return uname;
+    }
 
-	public long getFollowers() {
-		return followers;
-	}
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
 
-	public void setFollowers(long followers) {
-		this.followers = followers;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public long getFollowing() {
-		return following;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-	public void setFollowing(long following) {
-		this.following = following;
-	}
+    public String getBio() {
+        return bio;
+    }
 
-	public long getUid() {
-		return uid;
-	}
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
-	public void setUid(long uid) {
-		this.uid = uid;
-	}
+    public byte[] getPosts() { // Updated getter for posts
+        return posts;
+    }
 
-	@Override
-	public String toString() {
-		return "UserProfile [pid=" + pid + ", uname=" + uname + ", fullName=" + fullName + ", bio=" + bio + ", posts="
-				+ posts + ", followers=" + followers + ", following=" + following + ", uid=" + uid + "]";
-	}
-	
-	
+    public void setPosts(byte[] posts) { // Updated setter for posts
+        this.posts = posts;
+    }
 
+    public long getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(long followers) {
+        this.followers = followers;
+    }
+
+    public long getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(long following) {
+        this.following = following;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfile [pid=" + pid + ", uname=" + uname + ", fullName=" + fullName + ", bio=" + bio + ", posts="
+                + (posts != null ? posts.length + " bytes" : "null") + ", followers=" + followers + ", following="
+                + following + ", uid=" + uid + "]";
+    }
 }
