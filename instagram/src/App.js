@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import ExtraContent from './components/ExtraCotent'; // Correct the import name
 import CurrentProfile from './components/CurrentProfile';
+import Message from './components/Message';
 
 function App() {
   const [fullName, setFullName] = useState(''); // State to store the full name
@@ -30,6 +31,7 @@ function App() {
             <Route path="/addUserProfile" element={<AddUserProfile />} />
             <Route path="/currentProfile" element={<CurrentProfile setFullName={setFullName} />} />
             <Route path="/notification" element={<Notification />} />
+            <Route path="/message" element={<Message />} />
           </Routes>
         </div>
 

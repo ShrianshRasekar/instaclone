@@ -36,7 +36,7 @@ function Sidebar({ currentProfile }) {
             </li>
             <li style={{ display: 'flex', alignItems: 'center' }}>
               <FontAwesomeIcon icon={faComments} />
-              <Link to="/middleContent" style={{ marginLeft: '10px', color: 'white' }}>Message</Link>
+              <Link to="/message" style={{ marginLeft: '10px', color: 'white' }}>Message</Link>
             </li>
             <li style={{ display: 'flex', alignItems: 'center' }}>
               <FontAwesomeIcon icon={faHeart} />
