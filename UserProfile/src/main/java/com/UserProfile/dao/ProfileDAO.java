@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 
 @EnableJpaRepositories
 public interface ProfileDAO extends JpaRepository<UserProfile, Long>{
+	
+	public static final String HASH_KEY= "UserProfile";
 
 	@Query("select uname From UserProfile u WHERE u.uname=:un")
 	public List<String> isUserProfilenameExist(@Param("un") String uname);

@@ -33,6 +33,7 @@ public class UserProfileServiceImpl implements ProfileService {
 		if (Profiledao.findById(pid).isEmpty()) {
 			throw new ProfileNotFoundException("UserProfile not exist with id " + pid);
 		}
+		System.out.println("called getUserProfile by ID from DATABASE");
 		return Profiledao.findById(pid).get();
 	}
 
@@ -63,7 +64,7 @@ public class UserProfileServiceImpl implements ProfileService {
 	@Override
 	public UserProfile getUserProfileByUname(String uname) {
 		
-		
+		System.out.println("called getUserProfileByUsername from DATABASE");
 		return Profiledao.getUserProfileByUsername(uname);
 	}
 

@@ -7,6 +7,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +30,13 @@ import com.UserProfile.exception.ProfileDetailAlreadyExist;
 import com.UserProfile.entity.UserProfile;
 import com.UserProfile.service.ProfileService;
 
+import jakarta.annotation.PostConstruct;
+
 
 @RestController
 @RequestMapping("/userprofile")
 @CrossOrigin(origins = "http://localhost:3000")
+@EnableCaching
 public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
@@ -50,7 +57,7 @@ public class ProfileController {
 
 	// ALL GET
 	// requests------------------------------------------------------------------------***GET**------------
-	@GetMapping(path="/profiles",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="/profiles",produces=MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<List<UserProfile>> getUserProfiles() {
 		logger.info("Getting all users");
 		return ResponseEntity.of(Optional.of(profileService.getUserProfiles()));
@@ -58,6 +65,7 @@ public class ProfileController {
 	}
 
 	@GetMapping(path="/profileid/{pid}",produces=MediaType.APPLICATION_JSON_VALUE)
+	@Cacheable(key = "#pid",value = "UserProfile")
 	public UserProfile getUserProfile(@PathVariable Long pid) {
 		/*
 		 * UserProfile user=profileService.getUserProfile(uid); if(user==null) { return
@@ -69,6 +77,7 @@ public class ProfileController {
 	}
 	
 	@GetMapping(path="/{uname}",produces=MediaType.APPLICATION_JSON_VALUE)
+	@Cacheable(key = "#uname",value = "UserProfile",unless = "#result.followers>200")
 	public UserProfile getUserProfileByUsername(@PathVariable String uname) {
 		/*
 		 * UserProfile user=profileService.getUserProfile(uid); if(user==null) { return
@@ -194,10 +203,21 @@ public class ProfileController {
 	}
 	
 	@DeleteMapping("/username/{uname}")
+	@CacheEvict(key = "#pid",value = "UserProfile")
 	public ResponseEntity<String> deleteUserProfileByUname(@PathVariable String uname) {
 		profileService.deleteUserProfileByUname(uname);
 		String s = "UserProfile deleted having id " + uname;
 		return ResponseEntity.status(HttpStatus.OK).body(s);
 
+	}
+	
+	//----------------------------------------------------------
+	
+	@Value("${message}")
+	String message;
+	
+	@PostConstruct
+	public void printMessage() {
+		System.out.println(message);
 	}
 }
