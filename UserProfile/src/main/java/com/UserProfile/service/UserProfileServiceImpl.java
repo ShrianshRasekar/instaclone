@@ -1,7 +1,11 @@
 package com.UserProfile.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.UserProfile.dao.ProfileDAO;
@@ -138,6 +142,23 @@ public class UserProfileServiceImpl implements ProfileService {
 		Profiledao.updateUserProfileBio( username, bio);
 		return Profiledao.getUserProfileByUsername(username);
 	}
+	
+	@Transactional
+	@CachePut(key = "#uname", value = "UserProfile")
+	@Override
+	public UserProfile updateUserProfileFollowers(String uname, Long count) {
+	    List<String> u = Profiledao.isUserProfilenameExist(uname);
+	    
+	    if (!u.isEmpty()) {
+	        Profiledao.addFollower(uname, count);
+
+	        // Fetch fresh data from DB and return it to update cache
+	        return Profiledao.getUserProfileByUsername(uname);
+	    } else {
+	        throw new ProfileNotFoundException("UserProfile does not exist with UserName '" + uname + "'"); 
+	    }
+	}
+
 		
 	// ALL DELETE
 	// requests----------------------------------------------------------------DELETE----

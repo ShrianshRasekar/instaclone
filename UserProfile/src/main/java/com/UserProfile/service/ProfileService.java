@@ -30,6 +30,8 @@ public interface ProfileService {
 	
 	public String deleteUserProfileByUname(String uname);
 
+	public UserProfile updateUserProfileFollowers(String uname, Long count);
+
 	
 
 	//public UserProfile getUserProfileByUnameAndPassword(String uname,String password);

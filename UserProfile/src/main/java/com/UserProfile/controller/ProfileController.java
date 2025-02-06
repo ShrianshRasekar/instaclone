@@ -1,5 +1,8 @@
 package com.UserProfile.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -189,10 +193,18 @@ public class ProfileController {
             return ResponseEntity.badRequest().body("Bio cannot be empty");
         }
 
-        // Call service to update bio
+        // Call service to update bi
         profileService.updateUserProfileBio(username, bio);
         return ResponseEntity.ok("User bio updated successfully");
-    }// ALL Delete
+    }
+	
+	@PatchMapping("/addFollowers/{username}/{count}")
+	public UserProfile updateUserProfileFollowers(@PathVariable String username,@PathVariable Long count) {
+		
+       return  profileService.updateUserProfileFollowers(username,count);
+    }
+	
+	// ALL Delete
 	// requests------------------------------------------------------------------------***Delete**-------------
 	@DeleteMapping("/{pid}")
 	public ResponseEntity<String> deleteUserProfile(@PathVariable Long pid) {
@@ -213,11 +225,11 @@ public class ProfileController {
 	
 	//----------------------------------------------------------
 	
-	@Value("${message}")
+	@Value("${spring.datasource.url}")
 	String message;
 	
 	@PostConstruct
 	public void printMessage() {
-		System.out.println(message);
+		System.out.println(LocalDateTime.now()+message+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 	}
 }

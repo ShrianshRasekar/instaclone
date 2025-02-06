@@ -36,6 +36,11 @@ public interface ProfileDAO extends JpaRepository<UserProfile, Long>{
     @Modifying
     @Transactional
     void deleteByUsername(@Param("un") String uname);
+
+	
+	@Modifying
+	@Query("UPDATE UserProfile u SET u.followers =u.followers + :count WHERE u.uname = :uname AND u.followers < 1000")
+	public void addFollower(@Param("uname")String uname,@Param("count")Long count);
 	
 	
 }
